@@ -1,0 +1,193 @@
+
+.input-error {
+    border: 1px solid red !important;
+    color: red !important; 
+}
+.input-bien {
+    border: 1px solid green !important;
+    color: green !important; 
+}
+
+.titulo{
+    background-color: black;
+}
+
+.pregunta-respuesta{
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos del icono flotante */
+.floating-icon {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    background-color: #00bcbc;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 30%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Estilos de la pantalla emergente */
+.modal {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+    max-width: 350px;
+    min-width: 350px;
+    max-height: 90vh; /* Establece la altura máxima en el 80% de la altura visible del dispositivo */
+    /*overflow-y: auto; /* Agrega un scroll vertical cuando el contenido es demasiado grande */
+   
+}
+
+/* Para navegadores que no admiten la especificación de scrollbar-color */
+#chat-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+    background-color: #555555;
+    border-radius: 5px;
+}
+
+#chat-container::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
+.modal-content {
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+
+
+#chat-container {
+    max-height: 300px;
+    min-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 90%;
+    word-wrap: break-word;
+    font-size: 0.8rem;
+}
+
+#user-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc; /* Borde del input */
+    border-radius: 3px;
+    margin-right: 10px; /* Espaciado entre el input y el botón */
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+#send-button {
+    background-color: #4caf50; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+
+  .mensaje {
+    padding: 8px;
+    margin-bottom: 8px;
+    max-width: 100%; /* Limita el ancho del mensaje al 80% del contenedor para evitar que se extienda demasiado */
+  }
+  
+  .mensaje-enviado {
+    background-color: #4CAF50;  /* Color de fondo para mensajes enviados */
+    color: white;  /* Color de texto para mensajes enviados */
+    text-align: right;  /* Alinea el texto a la derecha para mensajes enviados */
+    margin-left: 50px;
+    border-radius: 7px;
+  }
+  
+  .mensaje-recibido {
+    background-color: #f1f1f1;  /* Color de fondo para mensajes recibidos */
+    color: black;  /* Color de texto para mensajes recibidos */
+    text-align: left;  /* Alinea el texto a la izquierda para mensajes recibidos */
+    margin-right: 50px;
+    border-radius: 7px;
+  }
+
+  .escribiendo {
+    bottom: 0;
+    margin-top: 0px;
+    text-align: left;
+    padding: 0px;
+    animation: fadeInOut 1s forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 1;
+        height: auto;
+        
+        visibility: visible;
+    }
+    25% {
+        opacity: 0;
+        height: 0;
+        visibility: hidden;
+    }
+    50% {
+        opacity: 1;
+        height: auto;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+        visibility: hidden;
+    }
+}
+
+
+
+
+
