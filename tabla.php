@@ -20,27 +20,26 @@ function crear_tabla() {
 
 
 
-
 function obtener_datos() {
     global $wpdb;
-
+    
     $tabla_nombre = $wpdb->prefix . 'mensajeAR_tabla';
 
-    $datos = array();
+    try {
+        // Realiza una consulta para obtener los datos
+        $query = "SELECT * FROM $tabla_nombre";
+        $resultado = $wpdb->get_results($query, ARRAY_A);
 
-    // Realiza una consulta para obtener los datos
-    $query = "SELECT * FROM $tabla_nombre";
-    $resultado = $wpdb->get_results($query, ARRAY_A); // Utiliza ARRAY_A para obtener un array asociativo
-
-    if ($resultado) {
-        $datos = $resultado;
+        if ($resultado) {
+            wp_send_json_success($resultado);
+        } else {
+            wp_send_json_error(array('message' => 'No se encontraron datos.'));
+        }
+    } catch (Exception $e) {
+        wp_send_json_error(array('message' => 'Error interno en el servidor.'));
     }
-   
-    // Devuelve los datos como JSON
-    header('Content-Type: application/json');
-    echo json_encode($datos);
 
-    wp_die();
+wp_die();
 }
 
 

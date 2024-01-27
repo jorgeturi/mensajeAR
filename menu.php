@@ -140,26 +140,7 @@ function mensajeAR_setting_celular() {
 
 
 
-?>
-<script>
 
-function asignarEventoClic() {
-    // Desasignar el evento antes de asignarlo nuevamente
-    var textoBoton = event.target.textContent;
-
-    // Lógica adicional si es necesario con el texto del botón
-    console.log('Texto del botón:', textoBoton);
-    opcionElegida(textoBoton);
-    
-}
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('btn_chat')) {
-        asignarEventoClic();
-    }
-});
-
-</script>
-<?php
 
 
 
@@ -193,15 +174,24 @@ function mensajeAR_setting_preguntas_respuestas() {
                         'force_br_newlines'    => true,
                         'force_p_newlines'     => false,
                         'convert_newlines_to_brs' => true,
-                        'toolbar1' => 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | mi_boton_personalizado',
+                        'toolbar1' => 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | disparador_boton | salto',
                         'setup' => 'function (editor) {
-                            editor.addButton("mi_boton_personalizado", {
-                                text: "Mi Botón",
+                            editor.addButton("disparador_boton", {
+                                text: "disparador boton",
                                 icon: false,
                                 onclick: function() {
-                                    editor.insertContent("<button test class=btn_chat style=color:white; onclick=opcionElegida(test);>Pregunta</button>");
+                                    editor.insertContent("<button test class=btn_chat>Reemplaza por tu disparador</button>");
                                 }
                             });
+
+                            editor.addButton("salto", {
+                                text: "otro mensaje",
+                                icon: false,
+                                onclick: function() {
+                                    editor.insertContent("[otro mensaje]");
+                                }
+                            });
+
                         }',
                     ),
                 );
@@ -294,10 +284,8 @@ function mostrar_formulario_personalizacion() {
 
 
 function mostrar_respuestas() {
-
-    ?>
-    
-    <h1>titulo</h1>
+?>
+    <h1>Respuestas</h1>
     <div id="tablaRespuestas"></div>
 
     <script>
@@ -307,19 +295,24 @@ function mostrar_respuestas() {
 
         function obtenerDatosYMostrarTabla() {
     // Realiza una solicitud AJAX al servidor
-    fetch('<?php echo admin_url('admin-ajax.php'); ?>?action=obtener_datos')
+    fetch('<?php echo admin_url('admin-ajax.php');?>?action=obtener_datos')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la solicitud AJAX: ' + response.statusText);
             }
-            return response.json(); // Asumiendo que esperas una respuesta JSON
+            // Retorna el cuerpo de la respuesta como JSON directamente
+            return response.json();
         })
-        .then(data => mostrarTabla(data))
+        .then(data => {
+            // Ahora data ya es un objeto JSON, puedes trabajar con él directamente
+            console.log(data);
+            mostrarTabla(data.data); // Asumiendo que data tiene una propiedad 'data' con los datos
+        })
         .catch(error => {
             console.error('Error al obtener datos:', error);
             mostrarErrorEnTabla();
         });
-    }
+}
 
 function mostrarErrorEnTabla() {
     var tablaRespuestas = document.getElementById('tablaRespuestas');
@@ -383,11 +376,10 @@ function mostrarErrorEnTabla() {
 }
 
 
+
+
+
+
     </script>
-
-
-
-    <?php
+<?php
 }
-
-

@@ -111,6 +111,9 @@
     width: 90%;
     word-wrap: break-word;
     font-size: 0.8rem;
+
+    display: flex;
+    flex-direction: column;
 }
 
 #user-input {
@@ -213,4 +216,27 @@
 
 .btn_chat:active {
     background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+}
+
+
+
+#btn-flotante,
+#btn-flotante2 {
+    margin-top: 10px; /* Agrega un espacio entre los botones */
+    padding: 10px 20px;
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn-flotante:hover,
+#btn-flotante2:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+}
+#btn-flotante2:disabled {
+    background-color: lightgray !important;
+    color: gray !important;
+    cursor: not-allowed !important;
 }

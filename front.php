@@ -69,7 +69,12 @@ function mensajeAR_output_html_front() {
              ?>
 
 
-            <div id="chat-container"></div>
+            <div id="chat-container">
+            <button id="btn-flotante">Dejar una consulta</button>
+            <button id="btn-flotante2">Ver opciones</button>
+
+
+            </div>
             <div class = "inferior" style="display: flex; align-items: center;">
 <input type="text" id="user-input" placeholder="Escribe un mensaje..." />
 <button id="send-button" onclick="enviarMensaje()">Enviar</button>
@@ -159,12 +164,17 @@ userInput.value = '';
         }, 1000);
     }
 
-
+    function contarOtroMensaje(mensaje) {
+        console.log("adentro de contar mensaje veo"+mensaje);
+        var contador = 0;
+        contador = (mensaje.match(/\[otro mensaje\]/g) || []).length;
+        return contador;
+    }
     
     function agregarMensaje(usuario, mensaje) {
-        console.log("agrego mensaje, de "+usuario+" pongo"+mensaje);
-
-
+        console.log("tengo que agregar "+contarOtroMensaje(mensaje));
+        var submensajes =contarOtroMensaje(mensaje);
+       
         var chatContainer = document.getElementById('chat-container');
         var nuevoMensaje = document.createElement('div');
 
@@ -175,10 +185,30 @@ userInput.value = '';
         if(usuario == "Bot"){
         nuevoMensaje.className = 'mensaje mensaje-recibido';
         }
-        
+        if(submensajes>0){
+             // Si hay submensajes, dividir el mensaje en partes
+        var partesMensaje = mensaje.split('[otro mensaje]');
+
+// Crear un nuevo mensaje para cada parte
+partesMensaje.forEach(function (parte, index) {
+    setTimeout(function () {
+                var nuevoMensaje = document.createElement('div');
+
+                nuevoMensaje.className = 'mensaje mensaje-recibido';
+
+                nuevoMensaje.innerHTML = `<strong>${"Bot"}:</strong> ${parte}`;
+                chatContainer.appendChild(nuevoMensaje);
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, index * 800); // Cada mensaje se mostrará después de 300 milisegundos (0.3 segundos) de retraso
+        });
+        }else{
 
         nuevoMensaje.innerHTML = `<strong>${usuario}:</strong> ${mensaje}`;
+    
         chatContainer.appendChild(nuevoMensaje);
+    }
+        
 
         // Desplazarse hacia abajo para mostrar el último mensaje
         chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -332,7 +362,62 @@ console.log('consultaUsuario:', consultaUsuario);
 
 
 
+function asignarEventoClic() {
+    // Desasignar el evento antes de asignarlo nuevamente
+    var textoBoton = event.target.textContent;
 
+    // Lógica adicional si es necesario con el texto del botón
+    console.log('Texto del botón:', textoBoton);
+    opcionElegida(textoBoton);
+    
+}
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('btn_chat')) {
+        asignarEventoClic();
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var btnFlotante2 = document.getElementById('btn-flotante2');
+
+    // Asignar evento clic al botón flotante 1
+    document.getElementById('btn-flotante').addEventListener('click', function() {
+        // Deshabilitar el botón flotante 2 si el estado de la conversación no es 0
+        if (estadoConversacion !== 0) {
+            btnFlotante2.disabled = true;
+            btnFlotante2.setAttribute('disabled', 'true');
+
+        }
+
+        // Ejecutar la función deseada
+        analizarPalabraClave("un mensaje", function() {
+            // Habilitar nuevamente el botón flotante 2 al finalizar la función
+            btnFlotante2.disabled = false;
+            btnFlotante2.setAttribute('disabled', 'false');
+
+        });
+
+        // Ocultar o eliminar el botón flotante 1
+        this.remove(); // Elimina el botón después de hacer clic
+    });
+
+    // Asignar evento clic al botón flotante 2
+    btnFlotante2.addEventListener('click', function() {
+        // Verificar si el estado de la conversación es 0 antes de ejecutar la función
+        if (estadoConversacion === 0) {
+            // Ejecutar la función deseada
+            analizarPalabraClave("hola");
+
+            // Ocultar o eliminar el botón flotante 2
+            this.remove(); // Elimina el botón después de hacer clic
+        } else {
+            console.log("No se puede hacer clic en el botón 2 mientras el estado de la conversación no sea 0.");
+
+
+        }
+    });
+});
 
 
     </script>
