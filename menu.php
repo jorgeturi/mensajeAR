@@ -121,16 +121,6 @@ function mensajeAR_setting_nombre() {
 // Función que agrega el campo "Celular" al formulario
 function mensajeAR_setting_celular() {
     $options = get_option('mensajeAR_options');
-    error_log(print_r($options, true));
-
-    $options_raw = get_option('mensajeAR_options');
-$options = maybe_unserialize($options_raw);
-
-if (!empty($options)) {
-    error_log(print_r($options, true));
-} else {
-    error_log('La opción mensajeAR_options no pudo deserializarse correctamente.');
-}
 
 
 
@@ -150,13 +140,26 @@ if (!empty($options)) {
 
 
 
+?>
+<script>
 
+function asignarEventoClic() {
+    // Desasignar el evento antes de asignarlo nuevamente
+    var textoBoton = event.target.textContent;
 
+    // Lógica adicional si es necesario con el texto del botón
+    console.log('Texto del botón:', textoBoton);
+    opcionElegida(textoBoton);
+    
+}
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('btn_chat')) {
+        asignarEventoClic();
+    }
+});
 
-
-
-
-
+</script>
+<?php
 
 
 
@@ -176,19 +179,46 @@ function mensajeAR_setting_preguntas_respuestas() {
                 <label for="pregunta_<?php echo $indice; ?>">Pregunta:</label><br>
                 <input type="text" name="mensajeAR_options[preguntas_respuestas][<?php echo $indice; ?>][pregunta]" value="<?php echo esc_attr($pregunta_respuesta['pregunta'] ?? ''); ?>" />
                 <br><br><label for="respuesta_<?php echo $indice; ?>">Respuesta:</label>
-                <?php wp_editor(
-                 $pregunta_respuesta['respuesta'] ?? '', // Contenido inicial del editor
-                'respuesta_' . $indice, // ID único del editor
-                array(
-               'textarea_name' => 'mensajeAR_options[preguntas_respuestas][' . $indice . '][respuesta]',
-                   'textarea_rows' => 7, // Ajusta este valor según sea necesario
-                 )
-                ); ?>
+                <?php
+                $editor_settings = array(
+                    'textarea_name' => 'mensajeAR_options[preguntas_respuestas][' . $indice . '][respuesta]',
+                    'textarea_rows' => 8,
+                    'teeny'         => true,
+                    'tinymce'       => array(
+                        'resize'               => 'vertical',
+                        'wp_autoresize_on'     => true,
+                        'add_unload_trigger'   => false,
+                        'paste_as_text'        => true,
+                        'forced_root_block'    => false,
+                        'force_br_newlines'    => true,
+                        'force_p_newlines'     => false,
+                        'convert_newlines_to_brs' => true,
+                        'toolbar1' => 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | mi_boton_personalizado',
+                        'setup' => 'function (editor) {
+                            editor.addButton("mi_boton_personalizado", {
+                                text: "Mi Botón",
+                                icon: false,
+                                onclick: function() {
+                                    editor.insertContent("<button test class=btn_chat style=color:white; onclick=opcionElegida(test);>Pregunta</button>");
+                                }
+                            });
+                        }',
+                    ),
+                );
+
+                wp_editor(
+                    $pregunta_respuesta['respuesta'] ?? '', // Contenido inicial del editor
+                    'respuesta_' . $indice, // ID único del editor
+                    $editor_settings
+                );
+                ?>
+
                 <br><br>
                 <button class="eliminar-campo">Eliminar</button>
             </div>
             <?php
         }
+
         ?>
     </div>
 
@@ -219,6 +249,20 @@ function mensajeAR_setting_preguntas_respuestas() {
                 $(this).parent().remove();
             });
         });
+
+
+
+
+
+        function agregarBotonPersonalizado() {
+    // Aquí puedes agregar la lógica para manejar el clic en tu botón personalizado
+    // Por ejemplo, puedes obtener el contenido actual del editor y agregar algo al mismo.
+    var contenidoEditor = tinyMCE.activeEditor.getContent();
+    var nuevoContenido = contenidoEditor + '<button>Mi Botón Personalizado</button>';
+    tinyMCE.activeEditor.setContent(nuevoContenido);
+}
+
+
     </script>
     <?php
 }

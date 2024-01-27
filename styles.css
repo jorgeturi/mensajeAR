@@ -86,7 +86,7 @@
 }
 
 .modal-content {
-    text-align: center;
+    text-align: left;
 }
 
 .close {
@@ -150,9 +150,10 @@
   .mensaje-recibido {
     background-color: #f1f1f1;  /* Color de fondo para mensajes recibidos */
     color: black;  /* Color de texto para mensajes recibidos */
-    text-align: left;  /* Alinea el texto a la izquierda para mensajes recibidos */
+    
     margin-right: 50px;
     border-radius: 7px;
+
   }
 
   .escribiendo {
@@ -191,3 +192,25 @@
 
 
 
+.aligncenter { 
+    display:-webkit-box;
+}
+
+.btn_chat {
+    background-color: #f1f1f1; /* Color de fondo */
+    color: #000; /* Color del texto */
+    padding: 8px 16px; /* Ajuste del relleno */
+    border: 1px solid #ccc; /* Borde delgado */
+    border-radius: 20px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s, border-color 0.3s; /* Transición suave del color de fondo y del borde */
+    outline: none; /* Sin contorno al hacer clic */
+}
+
+.btn_chat:hover {
+    background-color: #ddd; /* Cambia el color de fondo al pasar el ratón */
+}
+
+.btn_chat:active {
+    background-color: #ccc; /* Cambia el color de fondo al hacer clic */
+}

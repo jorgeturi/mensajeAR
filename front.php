@@ -148,12 +148,26 @@ userInput.value = '';
     }
 
 
+
+
+    function opcionElegida(palabraClave){
+        console.error("entre");
+        agregarMensaje('Usuario', palabraClave);
+        simularEscribiendo();
+        setTimeout(function() {
+             analizarPalabraClave(palabraClave);
+        }, 1000);
+    }
+
+
     
     function agregarMensaje(usuario, mensaje) {
         console.log("agrego mensaje, de "+usuario+" pongo"+mensaje);
 
+
         var chatContainer = document.getElementById('chat-container');
         var nuevoMensaje = document.createElement('div');
+
         if(usuario != "Bot"){
         nuevoMensaje.className = 'mensaje mensaje-enviado';
         }
@@ -162,6 +176,7 @@ userInput.value = '';
         nuevoMensaje.className = 'mensaje mensaje-recibido';
         }
         
+
         nuevoMensaje.innerHTML = `<strong>${usuario}:</strong> ${mensaje}`;
         chatContainer.appendChild(nuevoMensaje);
 
@@ -174,10 +189,17 @@ userInput.value = '';
     $options = get_option('mensajeAR_options');
     $preguntas_respuestas = $options['preguntas_respuestas'] ?? array();
     $preguntas_respuestas = array_values($preguntas_respuestas); // Asegurar que sea un array numérico
+
+    $preguntas_respuestas = array_map(function ($pregRespuesta) {
+        $pregRespuesta['respuesta'] = nl2br($pregRespuesta['respuesta']);
+        return $pregRespuesta;
+        
+    }, $preguntas_respuestas);
     ?>
     var opcionesMensajeAR = <?php echo json_encode($preguntas_respuestas); ?>;
     
     function analizarPalabraClave(mensaje) {
+
     console.log("me estoy metiendo en analizar");
 
     var contestacion = "";
@@ -198,6 +220,7 @@ userInput.value = '';
     if (hayCoincidencia) {
         // Si hay coincidencia, puedes manejarlo aquí
         agregarMensaje("Bot", contestacion);
+        return;
     } 
     if(mensaje == "un mensaje"){
         preguntar_datos(mensaje);
