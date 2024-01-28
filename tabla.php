@@ -18,6 +18,18 @@ function crear_tabla() {
     }
 }
 
+function borrar_tabla(){
+    global $wpdb;
+    $tabla_nombre = $wpdb->prefix . 'mensajeAR_tabla';
+
+    // Verifica si la tabla existe antes de intentar borrarla
+    if ($wpdb->get_var("SHOW TABLES LIKE '$tabla_nombre'") == $tabla_nombre) {
+        // Borra la tabla
+        $wpdb->query("DROP TABLE IF EXISTS $tabla_nombre");
+    }
+
+}
+
 
 
 function obtener_datos() {
@@ -119,7 +131,6 @@ if (isset($_POST['action'])) {
             break;
         case 'agregar_registro':
              agregar_registro();
-            break; // Agrega más casos según sea necesario
-        // Agrega más casos según sea necesario
+            break; 
     }
 }

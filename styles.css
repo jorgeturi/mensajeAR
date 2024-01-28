@@ -1,3 +1,4 @@
+@import url('stylesvar.css');
 
 .input-error {
     border: 1px solid red !important;
@@ -42,7 +43,7 @@
     position: fixed;
     bottom: 10px;
     right: 20px;
-    background-color: #00bcbc;
+    background-color: var(--color-boton-flotante, #00bc0d); /* Valor por defecto si la variable no está definida */
     color: #fff;
     font-size: 20px;
     padding: 10px;
@@ -126,7 +127,8 @@
 }
 
 #send-button {
-    background-color: #4caf50; /* Color de fondo del botón */
+    background-color: var(--color-boton-envio,#4caf50); /* Color de fondo del botón */
+
     color: #fff; /* Color del texto del botón */
     padding: 10px 15px;
     border: none;
@@ -143,7 +145,7 @@
   }
   
   .mensaje-enviado {
-    background-color: #4CAF50;  /* Color de fondo para mensajes enviados */
+    background-color: var(--color-mensaje-enviado, #4CAF50);
     color: white;  /* Color de texto para mensajes enviados */
     text-align: right;  /* Alinea el texto a la derecha para mensajes enviados */
     margin-left: 50px;
@@ -151,7 +153,8 @@
   }
   
   .mensaje-recibido {
-    background-color: #f1f1f1;  /* Color de fondo para mensajes recibidos */
+    background-color: var(--color-mensaje-recibido, #f1f1f1);
+
     color: black;  /* Color de texto para mensajes recibidos */
     
     margin-right: 50px;

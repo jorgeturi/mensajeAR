@@ -18,9 +18,7 @@ include_once(plugin_dir_path(__FILE__) . 'front.php');
 
 // Función que se ejecuta al activar el plugin
 function mensajeAR_activado() {
-    // Crear una tabla en la base de datos al activar el plugin
-    crear_tabla(); //para actualizacion 2
-    
+    crear_tabla(); 
 }
 
 // Función que se ejecuta al desactivar el plugin
@@ -28,5 +26,12 @@ function mensajeAR_desactivado() {
     // Puedes agregar código aquí al desactivar el plugin
 }
 
+function mensajeAR_desinstalar() {
+    borrar_tabla();
+    delete_option('mensajeAR_options');
+}
+
 register_activation_hook(__FILE__, 'mensajeAR_activado');
 register_deactivation_hook(__FILE__, 'mensajeAR_desactivado');
+register_uninstall_hook(__FILE__, 'mensajeAR_desinstalar');
+

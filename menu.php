@@ -1,6 +1,8 @@
 <?php
 add_action('admin_menu', 'mensajeAR_apartado_menu');
 add_action('admin_init', 'mensajeAR_settings_init');
+add_action('admin_init', 'mensajeAR_settings_init_styles');
+
 
 add_action('wp_ajax_obtener_datos', 'obtener_datos');
 add_action('wp_ajax_nopriv_obtener_datos', 'obtener_datos');
@@ -66,21 +68,37 @@ function mensajeAR_enqueue_styles() {
     wp_enqueue_style('mensajeAR-styles', plugin_dir_url(__FILE__) . 'styles.css');
 }
 
-// Llama a la función en el gancho adecuado (por ejemplo, admin_enqueue_scripts)
 add_action('admin_enqueue_scripts', 'mensajeAR_enqueue_styles');
 
 
 
 // Función que registra las opciones de configuración
 function mensajeAR_settings_init() {
-    add_settings_section('mensajeAR_section', 'Configuración de MensajeAR', '__return_false', 'mensajeAR_settings');
+    add_settings_section('mensajeAR_section', '', '__return_false', 'mensajeAR_settings');
 
     add_settings_field('nombre', 'Nombre', 'mensajeAR_setting_nombre', 'mensajeAR_settings', 'mensajeAR_section');
     add_settings_field('celular', 'Celular', 'mensajeAR_setting_celular', 'mensajeAR_settings', 'mensajeAR_section');
 
-    add_settings_field('preguntas_respuestas', 'Preguntas y Respuestas', 'mensajeAR_setting_preguntas_respuestas', 'mensajeAR_settings', 'mensajeAR_section');
+    add_settings_field('preguntas_respuestas', 'Disparadores y respuestas', 'mensajeAR_setting_preguntas_respuestas', 'mensajeAR_settings', 'mensajeAR_section');
 
     register_setting('mensajeAR_settings', 'mensajeAR_options');
+}
+
+
+function mensajeAR_settings_init_styles() {
+    add_settings_section('mensajeAR_section', '', '__return_false', 'mensajeAR_settings_styles');
+
+    add_settings_section('mensajeAR_section_colores', 'Colores', '__return_false', 'mensajeAR_settings_styles');
+
+    // Agrega opciones de colores a la nueva sección
+    add_settings_field('color_boton_flotante', 'Color Botón Flotante', 'mensajeAR_setting_color_boton_flotante', 'mensajeAR_settings_styles', 'mensajeAR_section_colores');
+    add_settings_field('color_boton_envio', 'Color Botón Envío', 'mensajeAR_setting_color_boton_envio', 'mensajeAR_settings_styles', 'mensajeAR_section_colores');
+    add_settings_field('color_mensaje_enviado', 'Color Mensaje Enviado', 'mensajeAR_setting_color_mensaje_enviado', 'mensajeAR_settings_styles', 'mensajeAR_section_colores');
+    add_settings_field('color_mensaje_recibido', 'Color Mensaje Recibido', 'mensajeAR_setting_color_mensaje_recibido', 'mensajeAR_settings_styles', 'mensajeAR_section_colores');
+
+
+    register_setting('mensajeAR_settings_styles', 'mensajeAR_options_styles');
+    
 }
 
 // Función que muestra el formulario de configuración
@@ -101,7 +119,7 @@ function mostrar_formulario_datos() {
             
             ?>
 
-            <?php submit_button('Guardar'); ?>
+        <?php submit_button('Guardar', 'primary', 'btn_conf'); ?>
         </form>
     </div>
     <?php
@@ -110,6 +128,7 @@ function mostrar_formulario_datos() {
 // Función que agrega el campo "Nombre" al formulario
 function mensajeAR_setting_nombre() {
     $options = get_option('mensajeAR_options');
+    
     if (!is_array($options)) {
         $options = array();
     }
@@ -121,7 +140,6 @@ function mensajeAR_setting_nombre() {
 // Función que agrega el campo "Celular" al formulario
 function mensajeAR_setting_celular() {
     $options = get_option('mensajeAR_options');
-
 
 
     if (!is_array($options)) {
@@ -157,7 +175,7 @@ function mensajeAR_setting_preguntas_respuestas() {
         foreach ($preguntas_respuestas as $indice => $pregunta_respuesta) {
             ?>
             <div class="pregunta-respuesta">
-                <label for="pregunta_<?php echo $indice; ?>">Pregunta:</label><br>
+                <label for="pregunta_<?php echo $indice; ?>">Disparador:</label><br>
                 <input type="text" name="mensajeAR_options[preguntas_respuestas][<?php echo $indice; ?>][pregunta]" value="<?php echo esc_attr($pregunta_respuesta['pregunta'] ?? ''); ?>" />
                 <br><br><label for="respuesta_<?php echo $indice; ?>">Respuesta:</label>
                 <?php
@@ -166,6 +184,8 @@ function mensajeAR_setting_preguntas_respuestas() {
                     'textarea_rows' => 8,
                     'teeny'         => true,
                     'tinymce'       => array(
+                        'plugins' => 'textcolor',
+                        'toolbar2' => 'fontselect fontsize forecolor backcolor ',
                         'resize'               => 'vertical',
                         'wp_autoresize_on'     => true,
                         'add_unload_trigger'   => false,
@@ -174,7 +194,7 @@ function mensajeAR_setting_preguntas_respuestas() {
                         'force_br_newlines'    => true,
                         'force_p_newlines'     => false,
                         'convert_newlines_to_brs' => true,
-                        'toolbar1' => 'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | code | disparador_boton | salto',
+                        'toolbar1' => ' bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | styleselect | disparador_boton | salto | code',
                         'setup' => 'function (editor) {
                             editor.addButton("disparador_boton", {
                                 text: "disparador boton",
@@ -224,10 +244,7 @@ function mensajeAR_setting_preguntas_respuestas() {
                 var index = container.children().length;
                 var nuevoCampo = `
                     <div class="pregunta-respuesta">
-                        <label for="pregunta_${index}">Pregunta:</label><br>
-                        <input type="text" name="mensajeAR_options[preguntas_respuestas][${index}][pregunta]" value=""/>
-                        <br><label for="respuesta_${index}">Respuesta:</label>
-                        <br><textarea name="mensajeAR_options[preguntas_respuestas][${index}][respuesta]" rows="5"></textarea>
+                        Guarda para escribir disparador y respuesta<br>
                         <br><button class="eliminar-campo">Eliminar</button>
                     </div>
                 `;
@@ -244,14 +261,7 @@ function mensajeAR_setting_preguntas_respuestas() {
 
 
 
-        function agregarBotonPersonalizado() {
-    // Aquí puedes agregar la lógica para manejar el clic en tu botón personalizado
-    // Por ejemplo, puedes obtener el contenido actual del editor y agregar algo al mismo.
-    var contenidoEditor = tinyMCE.activeEditor.getContent();
-    var nuevoContenido = contenidoEditor + '<button>Mi Botón Personalizado</button>';
-    tinyMCE.activeEditor.setContent(nuevoContenido);
-}
-
+     
 
     </script>
     <?php
@@ -270,14 +280,117 @@ function mensajeAR_setting_preguntas_respuestas() {
 
 /// FIN DATOSSSSSSSSSSSSSSS
 
-function mostrar_formulario_personalizacion() {
-    // Contenido del formulario de Personalización
+// Funciones para opciones de colores
+function mensajeAR_setting_color_boton_flotante() {
+    $options = get_option('mensajeAR_options_styles');
+    $default_color = '#00bc0d';  // Establece aquí el color predeterminado
+
+    ?>
+    <input type="color" name="mensajeAR_options_styles[color_boton_flotante]" value="<?php echo esc_attr($options['color_boton_flotante'] ?? $default_color); ?>" />
+    <?php
+}
+
+function mensajeAR_setting_color_boton_envio() {
+    $options = get_option('mensajeAR_options_styles');
+    $default_color = '#4caf50';  // Establece aquí el color predeterminado
+
+    ?>
+    <input type="color" name="mensajeAR_options_styles[color_boton_envio]" value="<?php echo esc_attr($options['color_boton_envio'] ?? $default_color); ?>" />
+    <?php
+}
+
+function mensajeAR_setting_color_mensaje_enviado() {
+    $options = get_option('mensajeAR_options_styles');
+    $default_color = '#4CAF50';  // Establece aquí el color predeterminado
+
+    ?>
+    <input type="color" name="mensajeAR_options_styles[color_mensaje_enviado]" value="<?php echo esc_attr($options['color_mensaje_enviado'] ?? $default_color); ?>" />
+    <?php
+}
+
+function mensajeAR_setting_color_mensaje_recibido() {
+    $options = get_option('mensajeAR_options_styles');
+    $default_color = '#f1f1f1';  // Establece aquí el color predeterminado
+
+    ?>
+    <input type="color" name="mensajeAR_options_styles[color_mensaje_recibido]" value="<?php echo esc_attr($options['color_mensaje_recibido'] ?? $default_color); ?>" />
+    <?php
 }
 
 
 
 
 
+
+function actualizar_styles_css_con_variables() {
+    // Obtén las opciones de colores
+    $options = get_option('mensajeAR_options_styles');
+
+    // Genera el contenido CSS con las variables definidas
+    $custom_css = ":root {
+        --color-boton-flotante: {$options['color_boton_flotante']};
+        --color-boton-envio: {$options['color_boton_envio']};
+        --color-mensaje-enviado: {$options['color_mensaje_enviado']};
+        --color-mensaje-recibido: {$options['color_mensaje_recibido']};
+    }";
+
+    // Ruta al archivo CSS
+    $archivo_css = plugin_dir_path(__FILE__) . 'stylesvar.css';
+
+    // Sobrescribe o crea el archivo styles.css con el contenido generado
+    file_put_contents($archivo_css, $custom_css);
+}
+
+
+function mostrar_formulario_personalizacion() {
+    $options = get_option('mensajeAR_options_styles');
+    error_log(print_r($options, true));
+
+    // Llama a la función para actualizar el archivo styles.css
+    actualizar_styles_css_con_variables();
+
+    ?>
+    <div class="wrap">
+        <h1>MensajeAR Personalización</h1>
+
+        <form method="post" action="options.php">
+            <?php
+            // Agrega las opciones de colores al formulario
+            settings_fields('mensajeAR_settings_styles');
+            do_settings_sections('mensajeAR_settings_styles');
+            ?>
+
+            <?php submit_button('Guardar', 'primary', 'btn_personalizacion'); ?>
+            
+        </form>
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+    <input type="hidden" name="action" value="reset_colores_por_defecto">
+    <?php submit_button('Restablecer valores por defecto', 'secondary', 'btn_reset_colores'); ?>
+</form>
+    </div>
+    <?php
+}
+
+
+function resetear_colores_por_defecto() {
+    // Define los valores por defecto
+    $default_colors = array(
+        'color_boton_flotante' => '#00bc0d',
+        'color_boton_envio' => '#4caf50',
+        'color_mensaje_enviado' => '#4CAF50',
+        'color_mensaje_recibido' => '#f1f1f1',
+    );
+
+    // Actualiza las opciones usando update_option
+    update_option('mensajeAR_options_styles', $default_colors);
+
+    // Redirecciona a la página de personalización o donde desees
+    wp_redirect(admin_url('admin.php?page=mensajeAR_menu'));
+    exit();
+}
+
+// Agrega una acción para que WordPress llame a la función cuando sea necesario
+add_action('admin_post_reset_colores_por_defecto', 'resetear_colores_por_defecto');
 
 
 
@@ -321,7 +434,7 @@ function mostrarErrorEnTabla() {
 
         function mostrarTabla(datos) {
             
-            // Crear la tabla HTML
+            // Crea la tabla HTML
             var tablaHTML = '<table class="wp-list-table widefat fixed striped">';
             tablaHTML += '<thead><tr><th style="width: 50px;">ID</th><th style="width: 150px;">nombre</th><th style="width: 100px;">numero</th><th style="width: 500px;">consulta</th><th style="width: 80px;">contactar</th><th style="width: 60px;">eliminar</th></tr></thead>';
             tablaHTML += '<tbody>';
