@@ -2,7 +2,7 @@
 /*
 Plugin Name: MensajeAR
 Description: Plugin para crear disparadores y respuestas
-Version: 1.0
+Version: 1.0.2
 Author: Tujo
 Author URI: https://tujo.com.ar
 License: GPL-2.0+
@@ -21,14 +21,14 @@ function mensajeAR_activado() {
     crear_tabla(); 
 }
 
-// Función que se ejecuta al desactivar el plugin
 function mensajeAR_desactivado() {
-    // Puedes agregar código aquí al desactivar el plugin
+    //ver en versiones posteriores que seria util
 }
 
 function mensajeAR_desinstalar() {
     borrar_tabla();
     delete_option('mensajeAR_options');
+    delete_option('mensajeAR_options_styles');
 }
 
 register_activation_hook(__FILE__, 'mensajeAR_activado');

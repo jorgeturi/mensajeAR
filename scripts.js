@@ -14,7 +14,7 @@ var userInput = document.getElementById('user-input');
        
         if (mensaje.trim() !== '') {
 
-            agregarMensaje('Usuario', mensaje); //muestro lo que mando usuario
+            agregarMensaje('Yo', mensaje); //muestro lo que mando 
             simularEscribiendo();
 
             // Envía el mensaje para su análisis aquí después de la pausa
@@ -28,7 +28,7 @@ var userInput = document.getElementById('user-input');
 
     //para disparadores que no sean por chat
     function opcionElegida(palabraClave){
-        agregarMensaje('Usuario', palabraClave);
+        agregarMensaje('Yo', palabraClave);
         simularEscribiendo();
         setTimeout(function() {
              analizarPalabraClave(palabraClave);

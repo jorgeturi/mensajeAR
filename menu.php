@@ -109,8 +109,9 @@ function mostrar_formulario_datos() {
         <h1>MensajeAR Configuración</h1>
         
         <?php settings_errors(); ?>
-
-        <form method="post" action="options.php">
+        
+        <div class="mostrar_configuracion">
+        <form method="post" action="options.php" class="formulario_configuracion">
             <?php
             // Agrega las opciones de configuración y las secciones al formulario
             settings_fields('mensajeAR_settings');
@@ -121,6 +122,7 @@ function mostrar_formulario_datos() {
 
         <?php submit_button('Guardar', 'primary', 'btn_conf'); ?>
         </form>
+        </div>
     </div>
     <?php
 }
@@ -181,7 +183,7 @@ function mensajeAR_setting_preguntas_respuestas() {
                 <?php
                 $editor_settings = array(
                     'textarea_name' => 'mensajeAR_options[preguntas_respuestas][' . $indice . '][respuesta]',
-                    'textarea_rows' => 8,
+                    'textarea_rows' => 10,
                     'teeny'         => true,
                     'tinymce'       => array(
                         'plugins' => 'textcolor',

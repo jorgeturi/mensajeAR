@@ -22,9 +22,78 @@
     margin-bottom: 20px;
 }
 
+.eliminar-campo{
+    padding: 7px 20px 7px 20px;
+    border-radius: 5px;
+    background-color: #930000;
+    color: #f1f1f1;
+    cursor: pointer;
+}
+.eliminar-campo:hover{
+    padding: 7px 20px 7px 20px;
+    border-radius: 5px;
+    background-color: #480000;
+    color: #f1f1f1;
+}
 
+#agregar-campo{
+    width: 100%;
+    padding: 20px;
+    background-color: #0f0f0f;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 7px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
 
+}
+#agregar-campo:hover{
+    background-color: #e8e8e8;
+    color:#0f0f0f
+}
+#btn_conf,
+#btn_personalizacion{
+    width: 100%;
+    padding: 20px;
+    background-color: #006fca;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.3s, color 0.3s;
+}
+#btn_conf,
+#btn_personalizacion:hover{
+    background-color: #005397;
+    color: #ccc;
+}
+.mostrar_configuracion{
+    display:inline-flex;
+    width: 100%;
+}
 
+.formulario_configuracion{
+    width: 100%;
+}
+
+.mostrar_configuracion .form-table {
+    /* Tus estilos personalizados para esta página específica */
+    vertical-align: top;
+    text-align: left;
+    padding: 20px 10px 20px 0;
+    width: 100%;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.mostrar_configuracion .form-table th {
+    /* Tus estilos personalizados para esta página específica */
+    vertical-align: top;
+    text-align: left;
+    padding: 20px 10px 20px 0;
+    width: 100px;
+    line-height: 1.3;
+    font-weight: 600;
+}
 
 
 

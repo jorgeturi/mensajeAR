@@ -8,10 +8,8 @@ function mensajeAR_enqueue_scripts() {
 // Llama a la función en el gancho adecuado
 add_action('wp_enqueue_scripts', 'mensajeAR_enqueue_scripts');
 
-
 // Llama a la función para mostrar el HTML
 add_action('wp_footer', 'mensajeAR_output_html_front');
-
 
 // Función que muestra el chat
 function mensajeAR_output_html_front() {
@@ -71,7 +69,7 @@ function mensajeAR_output_html_front() {
     <?php
     $options = get_option('mensajeAR_options');
     $preguntas_respuestas = $options['preguntas_respuestas'] ?? array();
-    $preguntas_respuestas = array_values($preguntas_respuestas); // Asegurar que sea un array numérico
+    $preguntas_respuestas = array_values($preguntas_respuestas); // Asegura que sea un array numérico
 
     $preguntas_respuestas = array_map(function ($pregRespuesta) {
         $pregRespuesta['respuesta'] = nl2br($pregRespuesta['respuesta']);
