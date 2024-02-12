@@ -81,8 +81,16 @@ function mensajeAR_settings_init() {
 
     add_settings_field('preguntas_respuestas', 'Disparadores y respuestas', 'mensajeAR_setting_preguntas_respuestas', 'mensajeAR_settings', 'mensajeAR_section');
 
+    // Registra la sección 'preguntas_respuestas' y sus campos
     register_setting('mensajeAR_settings', 'mensajeAR_options');
+    register_setting('mensajeAR_settings', 'mensajeAR_options[preguntas_respuestas]', 'sanitize_preguntas_respuestas');
 }
+
+function sanitize_preguntas_respuestas($input) {
+    //sanitización específica para las preguntas y respuestas si es necesario
+    return $input;
+}
+
 
 
 function mensajeAR_settings_init_styles() {
@@ -183,6 +191,7 @@ function mensajeAR_setting_preguntas_respuestas() {
                 <?php
                 $editor_settings = array(
                     'textarea_name' => 'mensajeAR_options[preguntas_respuestas][' . $indice . '][respuesta]',
+                    'textarea_rows' => 8,
                     'textarea_rows' => 10,
                     'teeny'         => true,
                     'tinymce'       => array(
@@ -205,7 +214,6 @@ function mensajeAR_setting_preguntas_respuestas() {
                                     editor.insertContent("<button test class=btn_chat>Reemplaza por tu disparador</button>");
                                 }
                             });
-
                             editor.addButton("salto", {
                                 text: "otro mensaje",
                                 icon: false,
@@ -213,24 +221,20 @@ function mensajeAR_setting_preguntas_respuestas() {
                                     editor.insertContent("[otro mensaje]");
                                 }
                             });
-
                         }',
                     ),
                 );
-
                 wp_editor(
                     $pregunta_respuesta['respuesta'] ?? '', // Contenido inicial del editor
                     'respuesta_' . $indice, // ID único del editor
                     $editor_settings
                 );
                 ?>
-
                 <br><br>
                 <button class="eliminar-campo">Eliminar</button>
             </div>
             <?php
         }
-
         ?>
     </div>
 
@@ -246,7 +250,10 @@ function mensajeAR_setting_preguntas_respuestas() {
                 var index = container.children().length;
                 var nuevoCampo = `
                     <div class="pregunta-respuesta">
-                        Guarda para escribir disparador y respuesta<br>
+                        <label for="pregunta_${index}">Pregunta:</label><br>
+                        <input type="text" name="mensajeAR_options[preguntas_respuestas][${index}][pregunta]" value=""/>
+                        <br><label for="respuesta_${index}">Respuesta:</label>
+                        <br><textarea name="mensajeAR_options[preguntas_respuestas][${index}][respuesta]" rows="5"></textarea>
                         <br><button class="eliminar-campo">Eliminar</button>
                     </div>
                 `;
@@ -258,22 +265,9 @@ function mensajeAR_setting_preguntas_respuestas() {
                 $(this).parent().remove();
             });
         });
-
-
-
-
-
-     
-
     </script>
     <?php
 }
-
-
-
-
-
-
 
 
 

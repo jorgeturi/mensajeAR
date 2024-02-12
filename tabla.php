@@ -20,7 +20,7 @@ function crear_tabla() {
 
 function borrar_tabla(){
     global $wpdb;
-    $tabla_nombre = $wpdb->prefix . 'mensajeAR_tabla';
+    $tabla_nombre = $wpdb->prefix . 'mensajear_tabla';
 
     // Verifica si la tabla existe antes de intentar borrarla
     if ($wpdb->get_var("SHOW TABLES LIKE '$tabla_nombre'") == $tabla_nombre) {
@@ -35,7 +35,7 @@ function borrar_tabla(){
 function obtener_datos() {
     global $wpdb;
     
-    $tabla_nombre = $wpdb->prefix . 'mensajeAR_tabla';
+    $tabla_nombre = $wpdb->prefix . 'mensajear_tabla';
 
     try {
         // Realiza una consulta para obtener los datos

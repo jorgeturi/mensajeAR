@@ -2,7 +2,7 @@
 /*
 Plugin Name: MensajeAR
 Description: Plugin para crear disparadores y respuestas
-Version: 1.0.2
+Version: 1.0.3
 Author: Tujo
 Author URI: https://tujo.com.ar
 License: GPL-2.0+
